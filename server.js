@@ -23,7 +23,7 @@ var ecstaticOpts = {
 
 var st = ecstatic(path.join(__dirname, 'public'), ecstaticOpts)
 var vst = ecstatic(path.join(__dirname, 'node_modules/iD'), ecstaticOpts)
-var pst = ecstatic(path.join(__dirname, 'node_modules/presets-wao', ecstaticOpts))
+var pst = ecstatic(path.join(__dirname, 'node_modules/presets-wao'), ecstaticOpts)
 module.exports = function (osm) {
   var osmrouter = osmserver(osm)
   var replicating = false
