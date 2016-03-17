@@ -1,0 +1,35 @@
+version: 0.1.{build}
+
+# Test against this version of Node.js
+environment:
+  nodejs_version: "5.8"
+
+platform:
+  - x64
+
+# fetch repository as zip archive
+shallow_clone: true
+
+cache:
+  - node_modules
+  - app\node_modules
+  - '%APPDATA%\npm-cache'
+  - '%USERPROFILE%\.electron'
+
+init:
+  - git config --global core.autocrlf input
+
+install:
+  # Get the latest stable version of Node.js or io.js
+  - ps: Install-Product node $env:nodejs_version x64
+  - npm install
+
+build_script:
+  - npm config set msvs_version 2015 --global
+  - node --version
+  - npm --version
+  - npm run build
+  - npm run rebuild-leveldb
+  - npm run package-win
+
+test: off
