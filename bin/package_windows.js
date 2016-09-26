@@ -1,6 +1,6 @@
 var path = require('path')
 var rimraf = require('rimraf').sync
-var spawn = require('child_process').spawnSync
+var spawn = require('cross-spawn').sync
 var packager = require('electron-packager')
 
 var pkg = require(path.join('..', 'package.json'))
