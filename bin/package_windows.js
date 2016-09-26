@@ -3,7 +3,7 @@ var rimraf = require('rimraf').sync
 var spawn = require('child_process').spawnSync
 var packager = require('electron-packager')
 
-var pkg = require('../package.json')
+var pkg = require(path.join('..', 'package.json'))
 
 // clear old output folder
 var distFolder = path.join(__dirname, '..', 'dist')
