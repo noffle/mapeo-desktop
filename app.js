@@ -4,13 +4,35 @@ var path = require('path')
 var fs = require('fs')
 var minimist = require('minimist')
 var electron = require('electron')
+var GhReleases = require('electron-gh-releases')
 var app = electron.app  // Module to control application life.
 var Menu = electron.Menu
 var BrowserWindow = electron.BrowserWindow  // Module to create native browser window.
 
 var menuTemplate = require('./lib/menu')
 
-if (require('electron-squirrel-startup')) return
+// if (require('electron-squirrel-startup')) return
+
+let options = {
+  repo: 'jenslind/electron-gh-releases',
+  currentVersion: app.getVersion()
+}
+
+var updater = new GhReleases(options)
+updater.check((err, status) => {
+  console.log('update status', status)
+  if (!err && status) {
+    // Download the update
+    updater.download()
+  }
+})
+
+// When an update has been downloaded
+updater.on('update-downloaded', (info) => {
+  // Restart the app and install the update
+  console.log('normally i\'d update now')
+  // updater.install()
+})
 
 var APP_NAME = app.getName()
 
