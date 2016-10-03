@@ -10,7 +10,35 @@ var BrowserWindow = electron.BrowserWindow  // Module to create native browser w
 
 var menuTemplate = require('./lib/menu')
 
+// windows
 if (require('electron-squirrel-startup')) return
+
+// macos
+var os = require('os').platform();
+if (os === 'darwin') {
+  var autoUpdater = require('auto-updater');
+  var appVersion = require('./package.json').version;
+  var updateFeed = 'http://192.168.2.24:3000';
+  autoUpdater.setFeedURL(updateFeed + '?v=' + appVersion);
+  autoUpdater.checkForUpdates()
+
+  autoUpdater.on('error', function (err) {
+    console.log('autoUpdater', 'error', err)
+  })
+  autoUpdater.on('checking-for-update', function () {
+    console.log('autoUpdater', 'checking-for-update')
+  })
+  autoUpdater.on('update-available', function () {
+    console.log('autoUpdater', 'update-available')
+  })
+  autoUpdater.on('update-not-available', function () {
+    console.log('autoUpdater', 'update-not-available')
+  })
+  autoUpdater.on('update-downloaded', function (evt) {
+    console.log('autoUpdater', 'update-downloaded', evt)
+  })
+}
+
 
 var APP_NAME = app.getName()
 
