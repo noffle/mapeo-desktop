@@ -7,7 +7,7 @@ node_js:
 os:
   - osx
 
-osx_image: xcode7.3
+# osx_image: xcode7.3
 
 before_install:
   - npm install -g npm
@@ -15,7 +15,7 @@ before_install:
   - security create-keychain -p mysecretpassword build.keychain
   - security default-keychain -s build.keychain
   - security unlock-keychain -p mysecretpassword build.keychain
-  - security import certificate.p12 -k build.keychain -T /usr/bin/codesign
+  - security import certificate.p12 -k build.keychain -P "" -T /usr/bin/codesign
   - security find-identity -v
 
 script:
