@@ -7,6 +7,8 @@ node_js:
 os:
   - osx
 
+osx_image: xcode7.3
+
 before_install:
   - npm install -g npm
   - echo $CERTIFICATE_OSX_P12 | base64 --decode > certificate.p12
