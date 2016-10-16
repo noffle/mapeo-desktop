@@ -10,7 +10,46 @@ var BrowserWindow = electron.BrowserWindow  // Module to create native browser w
 
 var menuTemplate = require('./lib/menu')
 
+// win32 only
 if (require('electron-squirrel-startup')) return
+
+// macos & windows
+var os = require('os').platform();
+if (os === 'darwin' || os === 'win32') {
+  var autoUpdater = require('auto-updater')
+
+  if (os === 'win32') {
+    getLatestTagWin32(function (err, tag) {
+      if (err) {
+        console.error('ERR on auto-update:', err)
+        return
+      }
+      check(tag)
+    })
+  }
+
+  function check (url) {
+    autoUpdater.setFeedURL(url)
+    autoUpdater.checkForUpdates()
+
+    autoUpdater.on('error', function (err) {
+      console.log('autoUpdater', 'error', err)
+    })
+    autoUpdater.on('checking-for-update', function () {
+      console.log('autoUpdater', 'checking-for-update')
+    })
+    autoUpdater.on('update-available', function () {
+      console.log('autoUpdater', 'update-available')
+    })
+    autoUpdater.on('update-not-available', function () {
+      console.log('autoUpdater', 'update-not-available')
+    })
+    autoUpdater.on('update-downloaded', function (evt) {
+      console.log('autoUpdater', 'update-downloaded', evt)
+    })
+  }
+}
+
 
 var APP_NAME = app.getName()
 
@@ -134,4 +173,20 @@ function mv (src, dst) {
   } catch (e) {
     fs.rename(src, dst)
   }
+}
+
+// Send an HTTP request to the master branch of the repo on Github, read
+// auto_updater.json, and determine the tag name of the latest released
+// version.
+function getLatestTagWin32 (cb) {
+  var url = 'https://github.com/digidem/mapeo-desktop/raw/master/auto_updater.json'
+  request(url, function (err, res, body) {
+    if (err) return cb(err)
+    try {
+      var data = JSON.parse(body)
+      cb(null, data.win32_tag)
+    } catch (e) {
+      return cb(e)
+    }
+  })
 }
