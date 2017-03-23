@@ -56,7 +56,7 @@
     "ecstatic": "^2.1.0",
     "electron-debug": "^1.0.0",
     "electron-squirrel-startup": "^1.0.0",
-    "electron-winstaller": "^2.3.1",
+    "electron-winstaller": "2.3.4",
     "end-of-stream": "^1.1.0",
     "hyperlog": "^4.12.0",
     "hyperlog-sneakernet-replicator": "^1.1.2",
